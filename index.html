@@ -87,8 +87,11 @@
   <h1>Strip HTML</h1>
   <p>Copy your HTML inside the box.</p>
   <div contenteditable="true" id="content"></div>
-  <button id="strip-html" class="pure-button pure-button-primary"
-          title="">Strip HTML
+  <button id="strip-html" class="pure-button pure-button-primary" title="Strip HTML">
+    Strip HTML
+  </button>
+  <button id="remove-newlines" class="pure-button" title="Remove newlines">
+    Remove newlines
   </button>
   <span id="hint">Cleaned & copied!</span>
   <p>Click one of the buttons above; your text will be cleaned and automatically re-copied.</p>
@@ -127,6 +130,18 @@
       var contentDiv = document.getElementById('content');
       var textContent = contentDiv.textContent;
       contentDiv.innerHTML = textContent;
+
+      copy_content_and_show_hint();
+    }
+  });
+
+  $("#remove-newlines").on("click", () => {
+    hide_hint();
+    if ($("#content").html()) {
+      var contentDiv = document.getElementById('content');
+      var textContent = contentDiv.textContent;
+      var textWithoutNewlines = textContent.replace(/\n/g, "");
+      contentDiv.textContent = textWithoutNewlines;
 
       copy_content_and_show_hint();
     }
