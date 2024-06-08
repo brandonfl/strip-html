@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="BrandonFL">
+  <meta name="description" content="Strip html locally without any data transmission.">
+  <title>HTML Cleaner</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.2.0/base-min.min.css"
+        integrity="sha512-yhE6062TCkGPY2EvgbmzzVqiBe6Aq2/U3iwmZwjQ96uMwz4XMPI4wNFZv0/wehlzm2WFxs6rmWpViicTCnL13w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/pure/2.2.0/buttons-min.min.css"
+        integrity="sha512-V2cF8nh1XgbM+ODfma6s2c/plJlLyPTYHTPW2ZIHU5vBNm8HXJLWQkovLmBP65YvJPOvv4Rtl+pUVB8F/CzpEA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <style>
+    body {
+      padding: 20px;
+      padding-bottom: 80px;
+    }
+
+    a, a:hover, a:visited, a:active {
+      color: #0078e7;
+    }
+
+    #page {
+      margin: 0px auto;
+      max-width: 960px;
+    }
+
+    #content {
+      border-width: 3px;
+      border-style: dashed;
+      height: 40vh;
+      margin: 10px 0;
+      overflow: auto;
+      padding: 6px 10px;
+      resize: both;
+    }
+
+    #hint {
+      color: forestgreen;
+      font-weight: bold;
+      opacity: 0%;
+      margin-left: 1em;
+    }
+
+    .pure-button {
+      border-radius: 30px;
+    }
+
+    @keyframes flash-show {
+      from {
+        opacity: 100%;
+      }
+      to {
+        opacity: 0%;
+      }
+    }
+
+    @keyframes flash-green {
+      from {
+        border-color: forestgreen;
+      }
+      to {
+        border-color: #000;
+      }
+    }
+
+    #content.run {
+      animation: flash-green 4s ease-in;
+    }
+
+    #hint.run {
+      animation: flash-show 4s ease-in;
+    }
+
+    .footnote {
+      font-size: 80%;
+    }
+  </style>
+</head>
+
+<body>
+<div id="page">
+  <h1>Strip HTML</h1>
+  <p>Copy your HTML inside the box.</p>
+  <div contenteditable="true" id="content"></div>
+  <button id="strip-html" class="pure-button pure-button-primary"
+          title="">Strip HTML
+  </button>
+  <span id="hint">Cleaned & copied!</span>
+  <p>Click one of the buttons above; your text will be cleaned and automatically re-copied.</p>
+  <p class="footnote">All operations are done locally on the client side. No data is transmitted to
+    the server or a
+    third party.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.1/cash.min.js"
+        integrity="sha512-X+cPfvYTMQ4sCK62U3QG9rdhziHcvR48TwiEJmlaXOpQH/aSaarxkL+zahylcvcZLDkGujg4o/ORdjSeBsRlMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  function hide_hint() {
+    $("#hint, #content").removeClass();
+    void document.getElementById("hint").offsetWidth;
+    void document.getElementById("content").offsetWidth;
+  }
+
+  function copy_content_and_show_hint() {
+    document.getElementById("content").focus();
+    var success = document.execCommand("selectAll") && document.execCommand("copy");
+    $("#hint").html(success ? "Cleaned & copied!" : "Cleaned. But please re-copy manually!");
+    $("#hint, #content").addClass("run");
+  }
+
+  $("#strip-html").on("click", () => {
+    hide_hint();
+    if ($("#content").html()) {
+      var contentDiv = document.getElementById('content');
+      var textContent = contentDiv.textContent;
+      contentDiv.innerHTML = textContent;
+
+      copy_content_and_show_hint();
+    }
+  });
+</script>
+</body>
+</html>
